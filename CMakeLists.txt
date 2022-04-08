@@ -10,3 +10,5 @@ pkg_search_module(LIBHYBRIS REQUIRED hybris-egl-platform)
 add_subdirectory(src)
 
 install(TARGETS lcd-tools DESTINATION bin)
+install(FILES systemd/lcd-sync-time.service systemd/lcd-sync-time.timer
+		DESTINATION /etc/systemd/system)
