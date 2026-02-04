@@ -1,4 +1,5 @@
 #include "catfish-tools.h"
+#include "rubyfish-tools.h"
 #include "koi-tools.h"
 #include "medaka-tools.h"
 
@@ -42,6 +43,19 @@ int main( int argc, char** argv ) {
 		app.add_flag("--enable-motion",[&catfish](int){ catfish.EnableMotion(); },"(Catfish) Enable motion");
 		app.add_flag("--disable-motion",[&catfish](int){ catfish.DisableMotion(); },"(Catfish) Disable motion");
 		app.add_flag("--session-restart","Initialise LCD for user session restart"); // this isn't used on catfish, but the service to error out if this option isn't present.
+		CLI11_PARSE(app, argc, argv);
+	}
+	else if (machineCodename ==  "rubyfish") {
+		RubyfishLcdTools rubyfish;
+		app.add_flag("--sync-time",[&rubyfish](int){ rubyfish.SyncTime(); },"Sync lcd time with linux time");
+		app.add_flag("--prepare-timepiece",[&rubyfish](int){ rubyfish.PrepareTimepiece(); },"(rubyfish) Start timepiece only mode");
+		app.add_flag("--enable-stepcounter",[&rubyfish](int){ rubyfish.EnableStepCounter(); },"(rubyfish) Enable the step counter");
+		app.add_flag("--disable-stepcounter",[&rubyfish](int){ rubyfish.DisableStepCounter(); },"(rubyfish) Disable the step counter");
+		app.add_flag("--enable-heartrate",[&rubyfish](int){ rubyfish.EnableHeartRate(); },"(rubyfish) Enable the heart rate sensor");
+		app.add_flag("--disable-heartrate",[&rubyfish](int){ rubyfish.DisableHeartRate(); },"(rubyfish) Disable the heart rate sensor");
+		app.add_flag("--enable-motion",[&rubyfish](int){ rubyfish.EnableMotion(); },"(rubyfish) Enable motion");
+		app.add_flag("--disable-motion",[&rubyfish](int){ rubyfish.DisableMotion(); },"(rubyfish) Disable motion");
+		app.add_flag("--session-restart","Initialise LCD for user session restart"); // this isn't used on rubyfish, but the service to error out if this option isn't present.
 		CLI11_PARSE(app, argc, argv);
 	}
 
