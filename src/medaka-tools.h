@@ -3,6 +3,7 @@
 
 namespace AsteroidOS::LCD_Tools::Medaka {
 	void SyncTime(int);
+	void PrepareTimepiece(int);
 	void SyncSettings(int);
 	void SetDisplayColor(bool value, bool persist = true);
 }
