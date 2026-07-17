@@ -42,6 +42,11 @@ void SyncTime(int) {
 	});
 }
 
+void PrepareTimepiece(int) {
+       Write({0x02,0x00,0x00,0x00,0x00,0x00,0x00});
+       Write({0xFE,0x81,0x01,0x00,0x00,0x00,0x00});
+}
+
 void SyncSettings(int) { // this is meant to be run on a session restart
 	SetDisplayColor(MGConfItem("/org/asteroidos/lcd-tools/medaka/display-color").value().toInt(),false);
 }

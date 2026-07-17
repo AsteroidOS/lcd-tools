@@ -27,6 +27,7 @@ int main( int argc, char** argv ) {
 	if (machineCodename == "medaka") {
 		using namespace AsteroidOS::LCD_Tools::Medaka;
 		app.add_flag("--sync-time",SyncTime,"Sync lcd time with linux time");
+		app.add_flag("--prepare-timepiece",PrepareTimepiece,"(Medaka) prepare watch for power off into timekeeping mode. You will then need to shut it down manually");
 		app.add_flag("--white-background",[](int){SetDisplayColor(true);},"(Medaka) set display background to white");
 		app.add_flag("--black-background",[](int){SetDisplayColor(false);},"(Medaka) set display background to black");
 		app.add_flag("--session-restart",SyncSettings,"Initialise LCD for user session restart");
