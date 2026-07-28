@@ -2,7 +2,7 @@
 
 #include <array>
 #include <iostream>
-#include <MGConfItem>
+#include <MDConfItem>
 
 #include <QTime>
 #include <QDate>
@@ -25,10 +25,11 @@ static void KoiSet12H(bool value) {
 	Write({0xFE,0x01,0x01,value,0x00,0x00,0x00});
 }
 
+
 namespace AsteroidOS::LCD_Tools::Koi {
 
-void SyncTime(int) {
-	KoiSet12H(!MGConfItem("/org/asteroidos/settings/use-12h-format").value().toBool());
+static void SyncTime() {
+	KoiSet12H(!MDConfItem("/org/asteroidos/settings/use-12h-format").value().toBool());
 	QDate dateNow = QDate::currentDate();
 	QTime timeNow = QTime::currentTime();
 	Write({
@@ -42,18 +43,26 @@ void SyncTime(int) {
 	});
 }
 
-void SetDisplayColor(bool value, bool persist) {
+static void SetDisplayColor(bool value, bool persist) {
 	if (persist) {
-		MGConfItem("/org/asteroidos/lcd-tools/koi/display-color").set(value);
+		MDConfItem("/org/asteroidos/lcd-tools/koi/display-color").set(value);
 	}
 	Write({0xFE,0x01,0x05,value,0x00,0x00,0x00});
 }
 
-void SyncSettings(int) {
-	SetDisplayColor(MGConfItem("/org/asteroidos/lcd-tools/koi/display-color").value().toInt(),false);
+static void SyncSettings() {
+	SetDisplayColor(MDConfItem("/org/asteroidos/lcd-tools/koi/display-color").value().toInt(),false);
 }
 
-void PrepareTimepiece(int) {
+static void PrepareTimepiece() {
 	Write({0x02,0xC1,0xBE,0x78,0x3F,0x91,0xC7});
 }
 } // end of namespace AsteroidOS::LCD_Tools::Koi
+
+Koi::Koi()
+        : st([]{ AsteroidOS::LCD_Tools::Koi::SyncTime(); })
+        , pt([]{ AsteroidOS::LCD_Tools::Koi::PrepareTimepiece(); })
+        , sr([]{ AsteroidOS::LCD_Tools::Koi::SyncSettings(); })
+        , wb([]{ AsteroidOS::LCD_Tools::Koi::SetDisplayColor(true, true); })
+        , bb([]{ AsteroidOS::LCD_Tools::Koi::SetDisplayColor(false, true); })
+{}

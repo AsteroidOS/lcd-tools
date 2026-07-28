@@ -1,10 +1,14 @@
 #ifndef ASTEROIDOS_KOI_TOOLS_H
 #define ASTEROIDOS_KOI_TOOLS_H
+#include "featurelist.h"
 
-namespace AsteroidOS::LCD_Tools::Koi {
-	void SyncTime(int);
-	void SyncSettings(int);
-	void SetDisplayColor(bool value, bool persist = true);
-	void PrepareTimepiece(int);
-}
+class Koi : public IWatch {
+public:
+	Koi();
+	AsteroidOS::LCD_Tools::Feature::SyncTime st;
+	AsteroidOS::LCD_Tools::Feature::PrepareTimepiece pt;
+	AsteroidOS::LCD_Tools::Feature::SessionRestart sr;
+	AsteroidOS::LCD_Tools::Feature::WhiteBackground wb;
+	AsteroidOS::LCD_Tools::Feature::BlackBackground bb;
+};
 #endif //ASTEROIDOS_KOI_TOOLS_H
