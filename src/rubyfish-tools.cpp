@@ -4,17 +4,26 @@
 #include <dlfcn.h>
 #include <hybris/common/dlfcn.h>
 #include <hybris/properties/properties.h>
-#include <MGConfItem>
+#include <MDConfItem>
 
-RubyfishLcdTools::RubyfishLcdTools() {
+Rubyfish::Rubyfish()
+    : st([this]{ SyncTime(); })
+    , pt([this]{ PrepareTimepiece(); })
+    , ds([this]{ DisableStepCounter(); })
+    , es([this]{ EnableStepCounter(); })
+    , dh([this]{ DisableHeartRate(); })
+    , eh([this]{ EnableHeartRate(); })
+    , dm([this]{ DisableMotion(); })
+    , em([this]{ EnableMotion(); })
+{
 	mcutool_handle = OpenLibrary();
 	LoadSymbols();
 }
-RubyfishLcdTools::~RubyfishLcdTools() {
+Rubyfish::~Rubyfish() {
 	CloseLibrary(mcutool_handle);
 }
 
-void* RubyfishLcdTools::OpenLibrary() {
+void* Rubyfish::OpenLibrary() {
 	auto lib_mcutool = hybris_dlopen("libmcutool.so", RTLD_LAZY);
 	if (!lib_mcutool) {
 		std::cerr << "Unable to load libmcutool.so" << std::endl;
@@ -23,7 +32,7 @@ void* RubyfishLcdTools::OpenLibrary() {
 	return lib_mcutool;
 }
 
-void* RubyfishLcdTools::LoadSymbol(const char *symbol_string) {
+void* Rubyfish::LoadSymbol(const char *symbol_string) {
 	void *symbol = hybris_dlsym(mcutool_handle, symbol_string);
 	if (!symbol) {
 		std::cerr << "Unable to get symbol " << symbol_string << std::endl;
@@ -32,7 +41,7 @@ void* RubyfishLcdTools::LoadSymbol(const char *symbol_string) {
 	return symbol;
 }
 
-void RubyfishLcdTools::LoadSymbols() {
+void Rubyfish::LoadSymbols() {
 	if (!mcutool_handle) return;
 
 	nativeFunctions.autoLowPowerScreen = (int (*)(int32_t, int32_t, int32_t)) LoadSymbol("Java_com_mobvoi_ticwear_mcuservice_backend_CoreService_nativeAutoLowPowerScreen");
@@ -50,7 +59,7 @@ void RubyfishLcdTools::LoadSymbols() {
 	nativeFunctions.wipeBandModeData = (int (*)()) LoadSymbol("Java_com_mobvoi_ticwear_mcuservice_backend_CoreService_nativeWipeBandModeData");
 }
 
-int RubyfishLcdTools::CloseLibrary(void* lib_mcutool) {
+int Rubyfish::CloseLibrary(void* lib_mcutool) {
 	if (hybris_dlclose(lib_mcutool)) {
 		std::cerr << "Failed to safely close the library" << std::endl;
 		return -1;
@@ -58,8 +67,8 @@ int RubyfishLcdTools::CloseLibrary(void* lib_mcutool) {
 	return 0;
 }
 
-int RubyfishLcdTools::SyncTime() {
-	auto use12h = new MGConfItem("/org/asteroidos/settings/use-12h-format");
+int Rubyfish::SyncTime() {
+	auto use12h = new MDConfItem("/org/asteroidos/settings/use-12h-format");
 
 	if (use12h->value(false).toBool()) {
 		property_set("persist.sys.time_12_24", "12");
@@ -70,7 +79,7 @@ int RubyfishLcdTools::SyncTime() {
 	return nativeFunctions.syncTime();
 }
 
-int RubyfishLcdTools::PrepareTimepiece() {
+int Rubyfish::PrepareTimepiece() {
 	int res;
 	res = nativeFunctions.autoLowPowerScreen(0, 0, true);
 	if (res) {
@@ -99,27 +108,27 @@ int RubyfishLcdTools::PrepareTimepiece() {
 	return 1;
 }
 
-int RubyfishLcdTools::DisableStepCounter() {
+int Rubyfish::DisableStepCounter() {
 	return nativeFunctions.enableStepCounter(0, 0, false);
 }
 
-int RubyfishLcdTools::EnableStepCounter() {
+int Rubyfish::EnableStepCounter() {
 	return nativeFunctions.enableStepCounter(0, 0, true);
 }
 
-int RubyfishLcdTools::DisableHeartRate() {
+int Rubyfish::DisableHeartRate() {
 	return nativeFunctions.enableHeartRate(0, 0, false);
 }
 
-int RubyfishLcdTools::EnableHeartRate() {
+int Rubyfish::EnableHeartRate() {
 	return nativeFunctions.enableHeartRate(0, 0, true);
 }
 
-int RubyfishLcdTools::DisableMotion() {
+int Rubyfish::DisableMotion() {
 	return nativeFunctions.enableMotion(0, 0, false);
 }
 
-int RubyfishLcdTools::EnableMotion() {
+int Rubyfish::EnableMotion() {
 	return nativeFunctions.enableMotion(0, 0, true);
 }
 
