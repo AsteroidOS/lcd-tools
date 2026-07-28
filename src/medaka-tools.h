@@ -1,10 +1,14 @@
 #ifndef ASTEROIDOS_MEDAKA_TOOLS_H
 #define ASTEROIDOS_MEDAKA_TOOLS_H
+#include "featurelist.h"
 
-namespace AsteroidOS::LCD_Tools::Medaka {
-	void SyncTime(int);
-	void PrepareTimepiece(int);
-	void SyncSettings(int);
-	void SetDisplayColor(bool value, bool persist = true);
-}
+class Medaka : public IWatch {
+public:
+        Medaka();
+	AsteroidOS::LCD_Tools::Feature::SyncTime st;
+        AsteroidOS::LCD_Tools::Feature::PrepareTimepiece pt;
+        AsteroidOS::LCD_Tools::Feature::SessionRestart sr;
+        AsteroidOS::LCD_Tools::Feature::WhiteBackground wb;
+        AsteroidOS::LCD_Tools::Feature::BlackBackground bb;
+};
 #endif //ASTEROIDOS_MEDAKA_TOOLS_H

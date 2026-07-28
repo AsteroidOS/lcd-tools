@@ -2,7 +2,7 @@
 
 #include <array>
 #include <iostream>
-#include <MGConfItem>
+#include <MDConfItem>
 
 #include <QTime>
 #include <QDate>
@@ -27,8 +27,8 @@ static void MedakaSet12H(bool value) {
 
 namespace AsteroidOS::LCD_Tools::Medaka {
 
-void SyncTime(int) {
-	MedakaSet12H(!MGConfItem("/org/asteroidos/settings/use-12h-format").value().toBool());
+static void SyncTime() {
+	MedakaSet12H(!MDConfItem("/org/asteroidos/settings/use-12h-format").value().toBool());
 	QDate dateNow = QDate::currentDate();
 	QTime timeNow = QTime::currentTime();
 	Write({
@@ -42,19 +42,27 @@ void SyncTime(int) {
 	});
 }
 
-void PrepareTimepiece(int) {
+static void PrepareTimepiece() {
        Write({0x02,0x00,0x00,0x00,0x00,0x00,0x00});
        Write({0xFE,0x81,0x01,0x00,0x00,0x00,0x00});
 }
 
-void SyncSettings(int) { // this is meant to be run on a session restart
-	SetDisplayColor(MGConfItem("/org/asteroidos/lcd-tools/medaka/display-color").value().toInt(),false);
+static void SetDisplayColor(bool value, bool persist) {
+	if (persist) {
+		MDConfItem("/org/asteroidos/lcd-tools/medaka/display-color").set(value);
+	}
+	Write({0xFE,0x01,0x05,static_cast<uint8_t>(value ? 0x01 : 0x02),0x00,0x00,0x00});
 }
 
-void SetDisplayColor(bool value, bool persist) {
-	if (persist) {
-		MGConfItem("/org/asteroidos/lcd-tools/medaka/display-color").set(value);
-	}
-	Write({0xFE,0x01,0x05,(value ? 0x01 : 0x02),0x00,0x00,0x00});
+static void SyncSettings() { // this is meant to be run on a session restart
+	SetDisplayColor(MDConfItem("/org/asteroidos/lcd-tools/medaka/display-color").value().toInt(),false);
 }
 } // end of namespace AsteroidOS::LCD_Tools::Medaka
+
+Medaka::Medaka()
+        : st([]{ AsteroidOS::LCD_Tools::Medaka::SyncTime(); })
+        , pt([]{ AsteroidOS::LCD_Tools::Medaka::PrepareTimepiece(); })
+        , sr([]{ AsteroidOS::LCD_Tools::Medaka::SyncSettings(); })
+        , wb([]{ AsteroidOS::LCD_Tools::Medaka::SetDisplayColor(true, true); })
+        , bb([]{ AsteroidOS::LCD_Tools::Medaka::SetDisplayColor(false, true); })
+{}
