@@ -4,17 +4,27 @@
 #include <dlfcn.h>
 #include <hybris/common/dlfcn.h>
 #include <hybris/properties/properties.h>
-#include <MGConfItem>
+#include <MDConfItem>
 
-CatfishLcdTools::CatfishLcdTools() {
+Catfish::Catfish() 
+    : st([this]{ SyncTime(); })
+    , pt([this]{ PrepareTimepiece(); })
+    , ds([this]{ DisableStepCounter(); })
+    , es([this]{ EnableStepCounter(); })
+    , dh([this]{ DisableHeartRate(); })
+    , eh([this]{ EnableHeartRate(); })
+    , dm([this]{ DisableMotion(); })
+    , em([this]{ EnableMotion(); })
+{
 	mcutool_handle = OpenLibrary();
 	LoadSymbols();
 }
-CatfishLcdTools::~CatfishLcdTools() {
+
+Catfish::~Catfish() {
 	CloseLibrary(mcutool_handle);
 }
 
-void* CatfishLcdTools::OpenLibrary() {
+void* Catfish::OpenLibrary() {
 	auto lib_mcutool = hybris_dlopen("libmcutool.so", RTLD_LAZY);
 	if (!lib_mcutool) {
 		std::cerr << "Unable to load libmcutool.so" << std::endl;
@@ -23,7 +33,7 @@ void* CatfishLcdTools::OpenLibrary() {
 	return lib_mcutool;
 }
 
-void* CatfishLcdTools::LoadSymbol(const char *symbol_string) {
+void* Catfish::LoadSymbol(const char *symbol_string) {
 	void *symbol = hybris_dlsym(mcutool_handle, symbol_string);
 	if (!symbol) {
 		std::cerr << "Unable to get symbol " << symbol_string << std::endl;
@@ -32,7 +42,7 @@ void* CatfishLcdTools::LoadSymbol(const char *symbol_string) {
 	return symbol;
 }
 
-void CatfishLcdTools::LoadSymbols() {
+void Catfish::LoadSymbols() {
 	if (!mcutool_handle) return;
 
 	nativeFunctions.autoLowPowerScreen = (int (*)(int32_t, int32_t, int32_t)) LoadSymbol("Java_com_mobvoi_ticwear_mcuservice_CoreService_nativeAutoLowPowerScreen");
@@ -50,7 +60,7 @@ void CatfishLcdTools::LoadSymbols() {
 	nativeFunctions.wipeBandModeData = (int (*)()) LoadSymbol("Java_com_mobvoi_ticwear_mcuservice_CoreService_nativeWipeBandModeData");
 }
 
-int CatfishLcdTools::CloseLibrary(void* lib_mcutool) {
+int Catfish::CloseLibrary(void* lib_mcutool) {
 	if (hybris_dlclose(lib_mcutool)) {
 		std::cerr << "Failed to safely close the library" << std::endl;
 		return -1;
@@ -58,8 +68,8 @@ int CatfishLcdTools::CloseLibrary(void* lib_mcutool) {
 	return 0;
 }
 
-int CatfishLcdTools::SyncTime() {
-	auto use12h = new MGConfItem("/org/asteroidos/settings/use-12h-format");
+int Catfish::SyncTime() {
+	auto use12h = new MDConfItem("/org/asteroidos/settings/use-12h-format");
 
 	if (use12h->value(false).toBool()) {
 		property_set("persist.sys.time_12_24", "12");
@@ -70,7 +80,7 @@ int CatfishLcdTools::SyncTime() {
 	return nativeFunctions.syncTime();
 }
 
-int CatfishLcdTools::PrepareTimepiece() {
+int Catfish::PrepareTimepiece() {
 	int res;
 	res = nativeFunctions.autoLowPowerScreen(0, 0, true);
 	if (res) {
@@ -99,27 +109,27 @@ int CatfishLcdTools::PrepareTimepiece() {
 	return 1;
 }
 
-int CatfishLcdTools::DisableStepCounter() {
+int Catfish::DisableStepCounter() {
 	return nativeFunctions.enableStepCounter(0, 0, false);
 }
 
-int CatfishLcdTools::EnableStepCounter() {
+int Catfish::EnableStepCounter() {
 	return nativeFunctions.enableStepCounter(0, 0, true);
 }
 
-int CatfishLcdTools::DisableHeartRate() {
+int Catfish::DisableHeartRate() {
 	return nativeFunctions.enableHeartRate(0, 0, false);
 }
 
-int CatfishLcdTools::EnableHeartRate() {
+int Catfish::EnableHeartRate() {
 	return nativeFunctions.enableHeartRate(0, 0, true);
 }
 
-int CatfishLcdTools::DisableMotion() {
+int Catfish::DisableMotion() {
 	return nativeFunctions.enableMotion(0, 0, false);
 }
 
-int CatfishLcdTools::EnableMotion() {
+int Catfish::EnableMotion() {
 	return nativeFunctions.enableMotion(0, 0, true);
 }
 

@@ -1,21 +1,29 @@
 #ifndef ASTEROIDOS_CATFISH_TOOLS_H
 #define ASTEROIDOS_CATFISH_TOOLS_H
-
+#include "featurelist.h"
 #include <cstdint>
 
-class CatfishLcdTools {
+class Catfish : public IWatch {
 public:
-	CatfishLcdTools();
-	virtual ~CatfishLcdTools();
-	virtual int SyncTime();
-	virtual int PrepareTimepiece();
-	virtual int DisableStepCounter();
-	virtual int EnableStepCounter();
-	virtual int DisableHeartRate();
-	virtual int EnableHeartRate();
-	virtual int DisableMotion();
-	virtual int EnableMotion();
+	Catfish();
+	~Catfish() final;
+	AsteroidOS::LCD_Tools::Feature::SyncTime st;
+	AsteroidOS::LCD_Tools::Feature::PrepareTimepiece pt;
+	AsteroidOS::LCD_Tools::Feature::DisableStepcounter ds;
+	AsteroidOS::LCD_Tools::Feature::EnableStepcounter es;
+	AsteroidOS::LCD_Tools::Feature::DisableHeartrate dh;
+	AsteroidOS::LCD_Tools::Feature::EnableHeartrate eh;
+	AsteroidOS::LCD_Tools::Feature::DisableMotion dm;
+	AsteroidOS::LCD_Tools::Feature::EnableMotion em;
 private:
+	int SyncTime();
+	int PrepareTimepiece();
+	int DisableStepCounter();
+	int EnableStepCounter();
+	int DisableHeartRate();
+	int EnableHeartRate();
+	int DisableMotion();
+	int EnableMotion();
 	void* OpenLibrary();
 	void LoadSymbols();
 	void* LoadSymbol(const char *symbol_string);
