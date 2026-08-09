@@ -35,5 +35,6 @@ int main( int argc, char** argv ) {
 		a->run(argc, argv);
 	} catch (std::out_of_range&) {
 		// not in the list of watches, so do nothing
+                std::cerr << "\"" << machineCodename << "\" does not have a secondary display\n";
 	}
 }
