@@ -19,17 +19,17 @@ using SyncTime = NamedFeature<
 
 using WhiteBackground = NamedFeature<
     fixed_string{"--white-background"},
-    fixed_string{"set display background to white"}
+    fixed_string{"Set display background to white"}
 >;
 
 using BlackBackground = NamedFeature<
     fixed_string{"--black-background"},
-    fixed_string{"set display background to black"}
+    fixed_string{"Set display background to black"}
 >;
 
 using PrepareTimepiece = NamedFeature<
     fixed_string{"--prepare-timepiece"},
-    fixed_string{"prepare watch for power off into timekeeping mode. You will then need to shut it down manually"}
+    fixed_string{"Prepare watch for power off into timekeeping mode. You will then need to shut it down manually"}
 >;
 
 using SessionRestart = NamedFeature<
