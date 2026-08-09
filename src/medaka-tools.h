@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2022-2026 Florent Revest <revestflo@gmail.com>
+// SPDX-License-Identifier: LGPL-3.0-or-later
 #ifndef ASTEROIDOS_MEDAKA_TOOLS_H
 #define ASTEROIDOS_MEDAKA_TOOLS_H
 #include "featurelist.h"

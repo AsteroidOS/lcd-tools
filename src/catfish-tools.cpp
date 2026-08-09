@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2022-2026 Florent Revest <revestflo@gmail.com>
+// SPDX-License-Identifier: LGPL-3.0-or-later
 #include "catfish-tools.h"
 
 #include <iostream>
