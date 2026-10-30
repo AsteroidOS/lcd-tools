@@ -11,12 +11,12 @@
 Rubyfish::Rubyfish()
     : syncTime([this]{ SyncTime(); })
     , prepareTimepiece([this]{ PrepareTimepiece(); })
-    , disableStepCounter([this]{ DisableStepCounter(); })
-    , enableStepCounter([this]{ EnableStepCounter(); })
-    , disableHeartRate([this]{ DisableHeartRate(); })
-    , enableHeartRate([this]{ EnableHeartRate(); })
-    , disableMotion([this]{ DisableMotion(); })
-    , enableMotion([this]{ EnableMotion(); })
+    , disableStepCounter([this]{ EnableStepCounter(false); })
+    , enableStepCounter([this]{ EnableStepCounter(true); })
+    , disableHeartRate([this]{ EnableHeartRate(false); })
+    , enableHeartRate([this]{ EnableHeartRate(true); })
+    , disableMotion([this]{ EnableMotion(false); })
+    , enableMotion([this]{ EnableMotion(true); })
 {
 	mcutool_handle = OpenLibrary();
 	LoadSymbols();
@@ -110,27 +110,15 @@ int Rubyfish::PrepareTimepiece() {
 	return 1;
 }
 
-int Rubyfish::DisableStepCounter() {
-	return nativeFunctions.enableStepCounter(0, 0, false);
+int Rubyfish::EnableStepCounter(bool enable) {
+	return nativeFunctions.enableStepCounter(0, 0, enable);
 }
 
-int Rubyfish::EnableStepCounter() {
-	return nativeFunctions.enableStepCounter(0, 0, true);
+int Rubyfish::EnableHeartRate(bool enable) {
+	return nativeFunctions.enableHeartRate(0, 0, enable);
 }
 
-int Rubyfish::DisableHeartRate() {
-	return nativeFunctions.enableHeartRate(0, 0, false);
-}
-
-int Rubyfish::EnableHeartRate() {
-	return nativeFunctions.enableHeartRate(0, 0, true);
-}
-
-int Rubyfish::DisableMotion() {
-	return nativeFunctions.enableMotion(0, 0, false);
-}
-
-int Rubyfish::EnableMotion() {
-	return nativeFunctions.enableMotion(0, 0, true);
+int Rubyfish::EnableMotion(bool enable) {
+	return nativeFunctions.enableMotion(0, 0, enable);
 }
 

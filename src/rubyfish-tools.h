@@ -20,12 +20,9 @@ public:
 private:
 	int SyncTime();
 	int PrepareTimepiece();
-	int DisableStepCounter();
-	int EnableStepCounter();
-	int DisableHeartRate();
-	int EnableHeartRate();
-	int DisableMotion();
-	int EnableMotion();
+	int EnableStepCounter(bool enable);
+	int EnableHeartRate(bool enable);
+	int EnableMotion(bool enable);
 	void* OpenLibrary();
 	void LoadSymbols();
 	void* LoadSymbol(const char *symbol_string);

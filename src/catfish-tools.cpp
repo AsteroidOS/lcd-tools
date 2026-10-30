@@ -11,12 +11,12 @@
 Catfish::Catfish() 
     : syncTime([this]{ SyncTime(); })
     , prepareTimepiece([this]{ PrepareTimepiece(); })
-    , disableStepCounter([this]{ DisableStepCounter(); })
-    , enableStepCounter([this]{ EnableStepCounter(); })
-    , disableHeartRate([this]{ DisableHeartRate(); })
-    , enableHeartRate([this]{ EnableHeartRate(); })
-    , disableMotion([this]{ DisableMotion(); })
-    , enableMotion([this]{ EnableMotion(); })
+    , disableStepCounter([this]{ EnableStepCounter(false); })
+    , enableStepCounter([this]{ EnableStepCounter(true); })
+    , disableHeartRate([this]{ EnableHeartRate(false); })
+    , enableHeartRate([this]{ EnableHeartRate(true); })
+    , disableMotion([this]{ EnableMotion(false); })
+    , enableMotion([this]{ EnableMotion(true); })
 {
 	mcutool_handle = OpenLibrary();
 	LoadSymbols();
@@ -111,27 +111,15 @@ int Catfish::PrepareTimepiece() {
 	return 1;
 }
 
-int Catfish::DisableStepCounter() {
-	return nativeFunctions.enableStepCounter(0, 0, false);
+int Catfish::EnableStepCounter(bool enable) {
+	return nativeFunctions.enableStepCounter(0, 0, enable);
 }
 
-int Catfish::EnableStepCounter() {
-	return nativeFunctions.enableStepCounter(0, 0, true);
+int Catfish::EnableHeartRate(bool enable) {
+	return nativeFunctions.enableHeartRate(0, 0, enable);
 }
 
-int Catfish::DisableHeartRate() {
-	return nativeFunctions.enableHeartRate(0, 0, false);
-}
-
-int Catfish::EnableHeartRate() {
-	return nativeFunctions.enableHeartRate(0, 0, true);
-}
-
-int Catfish::DisableMotion() {
-	return nativeFunctions.enableMotion(0, 0, false);
-}
-
-int Catfish::EnableMotion() {
-	return nativeFunctions.enableMotion(0, 0, true);
+int Catfish::EnableMotion(bool enable) {
+	return nativeFunctions.enableMotion(0, 0, enable);
 }
 
