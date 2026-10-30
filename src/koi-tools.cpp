@@ -1,5 +1,5 @@
 // SPDX-FileCopyrightText: 2022-2026 Florent Revest <revestflo@gmail.com>
-// SPDX-License-Identifier: LGPL-3.0-or-later
+// SPDX-License-Identifier: GPL-3.0-only
 #include "koi-tools.h"
 
 #include <array>
