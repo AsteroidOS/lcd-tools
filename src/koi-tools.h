@@ -7,10 +7,10 @@
 class Koi : public IWatch {
 public:
 	Koi();
-	AsteroidOS::LCD_Tools::Feature::SyncTime st;
-	AsteroidOS::LCD_Tools::Feature::PrepareTimepiece pt;
-	AsteroidOS::LCD_Tools::Feature::SessionRestart sr;
-	AsteroidOS::LCD_Tools::Feature::WhiteBackground wb;
-	AsteroidOS::LCD_Tools::Feature::BlackBackground bb;
+	AsteroidOS::LCD_Tools::Feature::SyncTime syncTime;
+	AsteroidOS::LCD_Tools::Feature::PrepareTimepiece prepareTimepiece;
+	AsteroidOS::LCD_Tools::Feature::SessionRestart sessionRestart;
+	AsteroidOS::LCD_Tools::Feature::WhiteBackground whiteBackground;
+	AsteroidOS::LCD_Tools::Feature::BlackBackground blackBackground;
 };
 #endif //ASTEROIDOS_KOI_TOOLS_H

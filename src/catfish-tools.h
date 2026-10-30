@@ -9,14 +9,14 @@ class Catfish : public IWatch {
 public:
 	Catfish();
 	~Catfish() final;
-	AsteroidOS::LCD_Tools::Feature::SyncTime st;
-	AsteroidOS::LCD_Tools::Feature::PrepareTimepiece pt;
-	AsteroidOS::LCD_Tools::Feature::DisableStepcounter ds;
-	AsteroidOS::LCD_Tools::Feature::EnableStepcounter es;
-	AsteroidOS::LCD_Tools::Feature::DisableHeartrate dh;
-	AsteroidOS::LCD_Tools::Feature::EnableHeartrate eh;
-	AsteroidOS::LCD_Tools::Feature::DisableMotion dm;
-	AsteroidOS::LCD_Tools::Feature::EnableMotion em;
+	AsteroidOS::LCD_Tools::Feature::SyncTime syncTime;
+	AsteroidOS::LCD_Tools::Feature::PrepareTimepiece prepareTimepiece;
+	AsteroidOS::LCD_Tools::Feature::DisableStepcounter disableStepCounter;
+	AsteroidOS::LCD_Tools::Feature::EnableStepcounter enableStepCounter;
+	AsteroidOS::LCD_Tools::Feature::DisableHeartrate disableHeartRate;
+	AsteroidOS::LCD_Tools::Feature::EnableHeartrate enableHeartRate;
+	AsteroidOS::LCD_Tools::Feature::DisableMotion disableMotion;
+	AsteroidOS::LCD_Tools::Feature::EnableMotion enableMotion;
 private:
 	int SyncTime();
 	int PrepareTimepiece();
