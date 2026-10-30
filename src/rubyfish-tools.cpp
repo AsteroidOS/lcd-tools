@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2022-2026 Florent Revest <revestflo@gmail.com>
+// SPDX-FileCopyrightText: 2022-2026 AsteroidOS contributors
 // SPDX-License-Identifier: GPL-3.0-only
 #include "rubyfish-tools.h"
 
