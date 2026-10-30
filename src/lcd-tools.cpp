@@ -30,11 +30,13 @@ int main( int argc, char** argv ) {
 		{ "koi",      []{ return std::make_unique<Koi>(); } },
 		{ "medaka",   []{ return std::make_unique<Medaka>(); } },
 	};
+        int returnValue{0};
 	try {
 		auto a = watches.at(machineCodename)();
-		a->run(argc, argv);
+		returnValue = a->run(argc, argv);
 	} catch (std::out_of_range&) {
 		// not in the list of watches, so do nothing
                 std::cerr << "\"" << machineCodename << "\" does not have a secondary display\n";
 	}
+        return returnValue;
 }
