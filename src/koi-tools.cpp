@@ -62,9 +62,9 @@ static void PrepareTimepiece() {
 } // end of namespace AsteroidOS::LCD_Tools::Koi
 
 Koi::Koi()
-        : st([]{ AsteroidOS::LCD_Tools::Koi::SyncTime(); })
-        , pt([]{ AsteroidOS::LCD_Tools::Koi::PrepareTimepiece(); })
-        , sr([]{ AsteroidOS::LCD_Tools::Koi::SyncSettings(); })
-        , wb([]{ AsteroidOS::LCD_Tools::Koi::SetDisplayColor(true, true); })
-        , bb([]{ AsteroidOS::LCD_Tools::Koi::SetDisplayColor(false, true); })
+        : syncTime([]{ AsteroidOS::LCD_Tools::Koi::SyncTime(); })
+        , prepareTimepiece([]{ AsteroidOS::LCD_Tools::Koi::PrepareTimepiece(); })
+        , sessionRestart([]{ AsteroidOS::LCD_Tools::Koi::SyncSettings(); })
+        , whiteBackground([]{ AsteroidOS::LCD_Tools::Koi::SetDisplayColor(true, true); })
+        , blackBackground([]{ AsteroidOS::LCD_Tools::Koi::SetDisplayColor(false, true); })
 {}

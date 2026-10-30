@@ -23,8 +23,8 @@ class Catfish : public IWatch {
 public:
     Catfish();
     ~Catfish() final;
-    SyncTime st;
-    PrepareTimepiece pt;
+    SyncTime syncTime;
+    PrepareTimepiece prepareTimepiece;
     SessionRestart sr;
 private:
     void sync_time();
@@ -48,8 +48,8 @@ The style of implementation of each feature depends on whether you use static fu
 #include <iostream>
 
 Catfish::Catfish() 
-    : st([this]{ sync_time(); }) 
-    , pt([this]{ prepare_timepiece(); })
+    : syncTime([this]{ sync_time(); }) 
+    , prepareTimepiece([this]{ prepare_timepiece(); })
     , sr([this]{ session_restart(); })
 {}
 
@@ -62,7 +62,7 @@ void Catfish::sync_time() {
 Any invocable function that has a signature like `void function(void);` may be used.  In this case, we use a lambda to capture the `this` variable to make use of member functions and data.  For other implementation which don't need or use member functions or data, the lambda can be slightly simpler:
 
 ```c++
-    st([]{ std::cout << "Invoking sync_time\n";})
+    syncTime([]{ std::cout << "Invoking sync_time\n";})
 ```
 
 Or if there is a static function which implements it, it might look like this:
@@ -72,7 +72,7 @@ static void sync_time() {
     // do some time syncing
 }
 
-    st(sync_time)
+    syncTime(sync_time)
 ```
 
 It's often the case that the only difference between and enable and a disable call is some data in a function call.  In this case we can have a single function and use a lambda to call it:
@@ -85,8 +85,8 @@ static void heartate(bool enable)
 
 // use this in our fictional Fishy watch constructor and features
 Fishy::Fishy()
-    : eh([]{ heartrate(true); }
-    , dh([]{ heartrate(false); }
+    : enableHeartRate([]{ heartrate(true); }
+    , disableHeartRate([]{ heartrate(false); }
     // etc.
 ```
 

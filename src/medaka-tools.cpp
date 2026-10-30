@@ -62,9 +62,9 @@ static void SyncSettings() { // this is meant to be run on a session restart
 } // end of namespace AsteroidOS::LCD_Tools::Medaka
 
 Medaka::Medaka()
-        : st([]{ AsteroidOS::LCD_Tools::Medaka::SyncTime(); })
-        , pt([]{ AsteroidOS::LCD_Tools::Medaka::PrepareTimepiece(); })
-        , sr([]{ AsteroidOS::LCD_Tools::Medaka::SyncSettings(); })
-        , wb([]{ AsteroidOS::LCD_Tools::Medaka::SetDisplayColor(true, true); })
-        , bb([]{ AsteroidOS::LCD_Tools::Medaka::SetDisplayColor(false, true); })
+        : syncTime([]{ AsteroidOS::LCD_Tools::Medaka::SyncTime(); })
+        , prepareTimePiece([]{ AsteroidOS::LCD_Tools::Medaka::PrepareTimepiece(); })
+        , sessionRestart([]{ AsteroidOS::LCD_Tools::Medaka::SyncSettings(); })
+        , whiteBackground([]{ AsteroidOS::LCD_Tools::Medaka::SetDisplayColor(true, true); })
+        , blackBackground([]{ AsteroidOS::LCD_Tools::Medaka::SetDisplayColor(false, true); })
 {}

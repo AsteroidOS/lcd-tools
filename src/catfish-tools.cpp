@@ -9,14 +9,14 @@
 #include <MDConfItem>
 
 Catfish::Catfish() 
-    : st([this]{ SyncTime(); })
-    , pt([this]{ PrepareTimepiece(); })
-    , ds([this]{ DisableStepCounter(); })
-    , es([this]{ EnableStepCounter(); })
-    , dh([this]{ DisableHeartRate(); })
-    , eh([this]{ EnableHeartRate(); })
-    , dm([this]{ DisableMotion(); })
-    , em([this]{ EnableMotion(); })
+    : syncTime([this]{ SyncTime(); })
+    , prepareTimepiece([this]{ PrepareTimepiece(); })
+    , disableStepCounter([this]{ DisableStepCounter(); })
+    , enableStepCounter([this]{ EnableStepCounter(); })
+    , disableHeartRate([this]{ DisableHeartRate(); })
+    , enableHeartRate([this]{ EnableHeartRate(); })
+    , disableMotion([this]{ DisableMotion(); })
+    , enableMotion([this]{ EnableMotion(); })
 {
 	mcutool_handle = OpenLibrary();
 	LoadSymbols();
